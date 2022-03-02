@@ -34,8 +34,8 @@ public class Posts {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long PostId;
-	
 	private String TitlePost;
+	private String DescriptionPost;
 	private int NbComment;
 	private LocalDateTime DatePost;
 	private String ImagePost;
@@ -44,14 +44,13 @@ public class Posts {
 
 	
 	
-	public Posts(String titlePost, int nbComment, String imagePost) {
+
+	public Posts(String titlePost, String descriptionPost, LocalDateTime datePost, String imagePost) {
 		super();
 		TitlePost = titlePost;
-
-		NbComment = nbComment;
+		DescriptionPost = descriptionPost;
+		DatePost = datePost;
 		ImagePost = imagePost;
-		
-		
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL)

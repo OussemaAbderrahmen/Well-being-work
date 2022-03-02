@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import tn.esprit.spring.wecare.dto.UserPosts;
 import tn.esprit.spring.wecare.entities.BestAndWorstPost;
 import tn.esprit.spring.wecare.entities.CommentPost;
 import tn.esprit.spring.wecare.entities.Departement;
@@ -78,6 +79,13 @@ public class ForumController {
 	public List<Posts> getAllSorted() {
 		List<Posts> listPosts = postService.getAllPostSorted();
 		return listPosts;
+	}
+	
+	// http://localhost:8089/wecare/forum/searchbyname/thisisatest
+	@GetMapping("/searchbyname/{name}")
+	public List<UserPosts> searchByName ( @PathVariable("name") String name)
+	{
+		return postService.searchbyname(name);
 	}
 
 	// http://localhost:8089/wecare/forum/get-post-by-id/2

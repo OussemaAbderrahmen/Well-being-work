@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import tn.esprit.spring.wecare.dto.UserPosts;
 import tn.esprit.spring.wecare.entities.BestAndWorstPost;
 import tn.esprit.spring.wecare.entities.Posts;
 import java.lang.String;
@@ -34,6 +36,10 @@ public interface PostRepository extends JpaRepository<Posts, Long> {
 	public BestAndWorstPost worstPost();
 	
 
+	@Query(value = "SELECT posts.description_post , posts.title_post , user.first_name  "
+			+ "FROM posts LEFT JOIN user ON posts.user_user_id=user.user_id"
+			+ " WHERE first_name= :name"  , nativeQuery = true)
+	public List<UserPosts> PostbyName(@Param("name")String name); 
 
    // Posts findFirstByOrderByIdDesc();
 

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
+import tn.esprit.spring.wecare.dto.UserPosts;
 import tn.esprit.spring.wecare.entities.BestAndWorstPost;
 import tn.esprit.spring.wecare.entities.Departement;
 import tn.esprit.spring.wecare.entities.Posts;
@@ -110,7 +111,7 @@ public class PostServiceImpl implements IPostservice {
 	
 	}
 	
-	
+	@Override
 	public Posts createPostAndAffectToUserAndDepartement(Posts p,Long userId,Long depId) {
 		
 	   Departement d = departementRepo.findById(depId).orElse(null);
@@ -183,6 +184,12 @@ public class PostServiceImpl implements IPostservice {
 	public BestAndWorstPost worstPost() {
 		
 		return postRepo.worstPost();
+	}
+	
+	
+	@Override
+	public List<UserPosts> searchbyname(String name) {
+ 		return  postRepo.PostbyName(name);
 	}
 	
 	
