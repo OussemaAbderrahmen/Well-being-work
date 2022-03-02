@@ -1,8 +1,14 @@
 package tn.esprit.spring.wecare.controllers;
 
 import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +19,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
 import tn.esprit.spring.wecare.entities.Collaboration;
 import tn.esprit.spring.wecare.entities.Complaint;
 import tn.esprit.spring.wecare.entities.Entreprise;
+import tn.esprit.spring.wecare.entities.MostComplainer;
+import tn.esprit.spring.wecare.entities.statComplaint;
 import tn.esprit.spring.wecare.services.ComplaintServiceImpl;
+import java.io.*;
+import okhttp3.*;
 
 @RestController
 @RequestMapping("/complaint")
+@Slf4j
 public class ComplaintController {
 	
 	@Autowired
@@ -62,4 +74,40 @@ public class ComplaintController {
 			complaintService.updateComplaint(complaintId);
 			return c;
 		}
+		
+		@PostMapping("/emotions") 
+		public void emotionComplaint(@RequestBody String description) throws IOException
+		 {
+
+//			    HttpServletRequest request = HttpServletRequest.get("https://api.apilayer.com/text_to_emotion").addHeader("apikey", "W0osvTrqOhman1PEd4oBbWB1BATBNdek").connectTimeout(120000);
+//	            String res = request.body();
+//	            return new ResponseEntity<>(res, HttpStatus.OK);
+			OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+		    MediaType mediaType = MediaType.parse("text/plain");
+
+		    Request request = new Request.Builder()
+		      .url("https://api.apilayer.com/text_to_emotion")
+		      .addHeader("apikey", "W0osvTrqOhman1PEd4oBbWB1BATBNdek")
+		      
+		      .build();
+		    Response response = client.newCall(request).execute();
+		    log.info("response:"+ response);
+	    
+			
+		}
+		
+		
+		//http://localhost:8089/wecare/complaint/mostcomplainer
+		@GetMapping("/mostcomplainer")
+		public List<MostComplainer> mostComplainer(){
+			return complaintService.mostComplainer();
+		}
+		
+		//http://localhost:8089/wecare/complaint/statcomplaint
+				@GetMapping("/statcomplaint")
+				public Set<statComplaint> getStatComplaint(){
+					
+					return complaintService.getstatComplains();
+				}
 }

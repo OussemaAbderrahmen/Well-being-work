@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -63,11 +64,13 @@ public class User {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	public List<Collaboration> collaborations ; 
 	
-	@JsonIgnore
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
+	@JsonIgnore
 	public List<Complaint> complaints ;
 	
 	@ManyToOne
+	@JsonIgnore
 	Departement departement; 
 
 	
@@ -91,6 +94,9 @@ public class User {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	public List<Dates> dates;
+
+	
+
 	
 }
 

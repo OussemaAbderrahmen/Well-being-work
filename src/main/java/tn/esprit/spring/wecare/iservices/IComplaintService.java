@@ -3,6 +3,7 @@ package tn.esprit.spring.wecare.iservices;
 import java.util.List;
 
 import tn.esprit.spring.wecare.entities.Complaint;
+import tn.esprit.spring.wecare.entities.MostComplainer;
 
 public interface IComplaintService {
 
@@ -11,4 +12,5 @@ public interface IComplaintService {
 	public Complaint getComplaintById(Long id);
 	public Complaint updateComplaint(Long id);
 	public void deleteComplaintById(Long id);
+	public List<MostComplainer> mostComplainer();
 }

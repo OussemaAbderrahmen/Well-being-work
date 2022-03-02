@@ -1,13 +1,16 @@
 package tn.esprit.spring.wecare.services;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.wecare.entities.Complaint;
 import tn.esprit.spring.wecare.entities.Entreprise;
+import tn.esprit.spring.wecare.entities.MostComplainer;
 import tn.esprit.spring.wecare.entities.User;
+import tn.esprit.spring.wecare.entities.statComplaint;
 import tn.esprit.spring.wecare.iservices.IComplaintService;
 import tn.esprit.spring.wecare.repositories.ComplaintRepository;
 import tn.esprit.spring.wecare.repositories.UserRepository;
@@ -50,5 +53,18 @@ public class ComplaintServiceImpl implements IComplaintService {
 		complaintRepo.deleteById(id);
 		
 	}
+
+	@Override
+	public List<MostComplainer> mostComplainer() {
+		
+		return complaintRepo.mostComplainer();
+	}
+	
+	
+	public Set<statComplaint> getstatComplains() {
+		
+		return complaintRepo.getStatComplaint();
+	}
+	
 
 }
