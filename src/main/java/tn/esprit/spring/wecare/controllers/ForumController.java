@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import tn.esprit.spring.wecare.entities.BestAndWorstPost;
 import tn.esprit.spring.wecare.entities.CommentPost;
+import tn.esprit.spring.wecare.entities.Departement;
 import tn.esprit.spring.wecare.entities.Posts;
 import tn.esprit.spring.wecare.services.CommentPostServiceImpl;
+import tn.esprit.spring.wecare.services.DepartementServiceImpl;
 import tn.esprit.spring.wecare.services.PostServiceImpl;
 
 @RestController
@@ -28,12 +31,33 @@ public class ForumController {
 	PostServiceImpl postService;
 	@Autowired
 	CommentPostServiceImpl commentService;
+	@Autowired
+	DepartementServiceImpl departementService;
+
+	//----------------------------------------------------------POST------------------------------------------------------------------------------------------------
 
 	// http://localhost:8089/wecare/forum/create-post
 	@PostMapping("/create-post")
 	public Posts createPost(@RequestBody Posts post) {
 
 		return postService.createPost(post);
+	}
+	
+	// http://localhost:8089/wecare/forum/create-full-post/1
+
+	@PostMapping("/create-full-post/{user-id}")
+	public Posts createPostAndAffectToUser(@RequestBody Posts p,@PathVariable("user-id")Long userId){
+		
+		
+		return postService.createPostAndAffectToUser(p, userId);
+	}
+	
+	// http://localhost:8089/wecare/forum/create-full-post/1/1
+	@PostMapping("/create-full-post/{user-id}/{dep-id}")
+	public Posts createPostAndAffectToDeparmentAndUser(@RequestBody Posts p,@PathVariable(name="user-id")Long userId,@PathVariable(name="dep-id")Long depId){
+		
+		
+		return postService.createPostAndAffectToUserAndDepartement(p, userId, depId);
 	}
 
 	// http://localhost:8089/wecare/forum/update-post/2
@@ -49,6 +73,7 @@ public class ForumController {
 		List<Posts> listPosts = postService.getAllPosts();
 		return listPosts;
 	}
+	// 6
 	@GetMapping("/get-all-postsSorted")
 	public List<Posts> getAllSorted() {
 		List<Posts> listPosts = postService.getAllPostSorted();
@@ -67,13 +92,55 @@ public class ForumController {
 	public void deletePost(@PathVariable("post-id") Long id) {
 		postService.deletePostById(id);
 	}
+	
+	//http://localhost:8089/wecare/forum/likepost/{idPost}/{id}
+	@PutMapping("/likepost/{idPost}/{id}")
+	public void LikePost( @PathVariable("idPost") Long idPost , @PathVariable("id") Long id)
+	{	
+		 postService.likeAPost(idPost, id) ;
+		
+	}
+	
+	
+
+	//http://localhost:8089/wecare/forum//disLikepost/{idPost}/{id}
+
+	@PutMapping("/disLikepost/{idPost}/{id}")
+	public void DisLikePost( @PathVariable("idPost") Long idPost , @PathVariable("id") Long id)
+	{	 
+		postService.dislikeAPost(idPost, id) ;
+	
+    }
+	
+	
+	//http://localhost:8089/wecare/forum/getbestpost
+
+	@GetMapping("/getbestpost")
+	public BestAndWorstPost getBestPost(){
+		return postService.bestPost();
+	}
+	
+	
+	//http://localhost:8089/wecare/forum/getworstpost
+
+		@GetMapping("/getworstpost")
+		public BestAndWorstPost getWorstPost(){
+			return postService.worstPost();
+		}
+	
+	//---------------------------------------------------------COMMENT --------------------------------------------------------------
 
 	// http://localhost:8089/wecare/forum/add-comment/1
-	@PostMapping("/add-comment/{idPost}")
-	public CommentPost addComment(@RequestBody CommentPost cp, @PathVariable Long idPost) {
+	@PostMapping("/add-comment/{post-id}/{user-id}")
+	public CommentPost addComment(@RequestBody CommentPost cp, @PathVariable(name="post-id") Long userId,@PathVariable(name="user-id") Long idPost) {
 
-		return commentService.createAndAffectCommentToPost(cp, idPost);
+		return commentService.createAndAffectCommentToPostAndUser(cp, userId, idPost);
 
+	}
+	//http://localhost:8089/wecare/forum/retrieve-all-comments
+	@GetMapping("/retrieve-all-comments")
+	public List<CommentPost> retrieveAllComments(){
+		return commentService.getAllComment();
 	}
 
 	// http://localhost:8089/wecare/forum/retrieve-comments-by-postid/2
@@ -95,6 +162,30 @@ public class ForumController {
 	public void deleteComment(@PathVariable("comment-id")Long id) {
 		commentService.deleteComment(id);
 	}
+	
+	//http://localhost:8089/wecare/forum/likecomment/{comment-id}/{user-id}
+
+	@PutMapping("/likecomment/{comment-id}/{user-id}")
+	public void likeComment( @PathVariable(name="comment-id") Long commentId , @PathVariable(name="user-id") Long userId)
+	{	 
+		commentService.likeAComment(commentId, userId);
+	
+    }
+	
+	//http://localhost:8089/wecare/forum/dislikecomment/{comment-id}/{user-id}
+	@PutMapping("/dislikecomment/{comment-id}/{user-id}")
+	public void dislikeComment( @PathVariable("comment-id") Long commentId , @PathVariable("user-id") Long userId)
+	{	 
+		commentService.dislikeAComment(commentId, userId);
+	
+    }
+	
+	//http://localhost:8089/wecare/forum/addcommenttocomment/{comment-id}/{user-id}
+	@PostMapping("/addcommenttocomment/{comment-id}/{user-id}")
+	public void commentaComment(@PathVariable(name="comment-id") Long commentid , @RequestBody CommentPost response , @PathVariable(name ="user-id") Long idUser)
+	{
+				 commentService.CommentAComment(response, commentid, idUser);
+	}
 
 	// http://localhost:8089/wecare/forum/page/2
 	/*@GetMapping("/page/{pageNumber}")
@@ -102,4 +193,26 @@ public class ForumController {
 		return new ResponseEntity<>(this.postService.getAllPaginated(pageNumber), HttpStatus.OK);
 	}*/
 
-}
+	//----------------------------------------------------------------------DEPARTEMENT-------------------------------------------------------------------
+	
+	//http://localhost:8089/wecare/forum/create-departement
+	@PostMapping("/create-departement")
+	public void addDepartement(@RequestBody Departement d){
+		departementService.createDepartement(d);
+	}
+	//http://localhost:8089/wecare/forum/get-all-departement
+	@GetMapping("/get-all-departement")
+	public List<Departement> getAllDepartements(){
+		return departementService.getAllDepartement();
+	}
+	//http://localhost:8089/wecare/forum/update-departement/2
+	@PutMapping("update-departement/{departement-id}")
+	public Departement updateDepratement(@RequestBody Departement d, @PathVariable("departement-id") Long departementId){
+		return departementService.updateDepartement(d, departementId);
+	}
+	//http://localhost:8089/wecare/forum/delete-departement/2
+	@DeleteMapping("delete-departement/{departement-id}")
+		public void deleteDepartement(@PathVariable("departement-id") Long departementId){
+			departementService.deleteDepartement(departementId);
+		}
+	}

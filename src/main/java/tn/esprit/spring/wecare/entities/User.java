@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Entity
@@ -29,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -47,8 +49,10 @@ public class User {
 	private Timestamp ModifiedAt;
 	private Timestamp DeletedAt;
 	private String Image;
+
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
+	@JsonIgnore
 	public List<Posts> posts; 
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
@@ -67,9 +71,6 @@ public class User {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	public List<Complaint> complaints ;
 	
-	@ManyToOne
-	Departement departement; 
-
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	public List<Offer> offers ;
@@ -91,6 +92,16 @@ public class User {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	public List<Dates> dates;
+	
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
+	@JsonIgnore
+	public List<CommentPost> userComments;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JsonIgnore
+	public Departement Departement;
+	
+	
 	
 }
 

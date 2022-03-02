@@ -1,6 +1,7 @@
 package tn.esprit.spring.wecare.services;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import tn.esprit.spring.wecare.entities.CommentPost;
 import tn.esprit.spring.wecare.entities.Entreprise;
 import tn.esprit.spring.wecare.entities.Posts;
+import tn.esprit.spring.wecare.entities.User;
 import tn.esprit.spring.wecare.iservices.ICommentPostService;
 import tn.esprit.spring.wecare.repositories.CommentPostRepository;
 import tn.esprit.spring.wecare.repositories.PostRepository;
@@ -25,21 +27,12 @@ public class CommentPostServiceImpl implements ICommentPostService {
 	@Autowired
 	UserRepository userRepo;
 
-	@Override
-	public CommentPost createAndAffectCommentToPost(CommentPost cp, Long idPost) {
-		
-			log.info("in method create And Effect Comment to Post");
-			Posts p = postRepo.findById(idPost).orElse(null);
-     		p.getCommentposts().add(cp);
-     		cp.setPosts(p);
-			log.info("post :"+idPost);
-			log.info("cp :"+cp.toString());
-			
 
-		return commentRepo.save(cp);
-		
+
+	public List<CommentPost> getAllComment(){
+		return commentRepo.findAll();
 	}
-
+	
 	@Override
 	public List<CommentPost> getCommentByPostId(Long id) {
 		Posts p = postRepo.findById(id).orElse(null);
@@ -70,19 +63,86 @@ public class CommentPostServiceImpl implements ICommentPostService {
 		return commentRepo.findById(id).orElse(null);
 	}
 	
-	public int Like(Long id){
+
+
+	@Override
+	public CommentPost createAndAffectCommentToPostAndUser(CommentPost cp, Long userId, Long postId) {
 		
-		CommentPost p= commentRepo.findById(id).orElse(null);
-		int likes=p.getLikeikes();
-		return likes+1;
-	
+		cp.setPosts(postRepo.findById(postId).orElseGet(null));		
+		cp.setUser(userRepo.findById(userId).orElseGet(null));
+		return commentRepo.save(cp);
+		
+
+
 	}
-	
-	public int dislike(Long id){
-		CommentPost p= commentRepo.findById(id).orElse(null);
-		int dislikes=p.getDislikes();
-		return dislikes+1;
+
+	@Override
+	public void likeAComment(Long idComment, Long userId) {
+		CommentPost cp = commentRepo.findById(idComment).orElseGet(null);
+		User u = userRepo.findById(userId).orElseGet(null);
+		Set<User> l = cp.getUserCommentLikes();
+		if(cp.getUserCommentDislikes().contains(u))
+		{
+			cp.getUserCommentDislikes().remove(u);
+			l.add(u);
+			cp.setUserCommentLikes(l);
+			}
+		else
+		{	if(cp.getUserCommentDislikes().contains(u)) {
+			cp.getUserCommentLikes().remove(u);	
+		}
+		else {l.add(u);}
+		}
+		commentRepo.save(cp);
+	 
 		
 	}
 
+	@Override
+	public void dislikeAComment(Long idComment, Long userId) {
+		CommentPost cp = commentRepo.findById(idComment).orElseGet(null);
+		User u = userRepo.findById(userId).orElseGet(null);
+		Set<User> l = cp.getUserCommentDislikes();
+		if(cp.getUserCommentLikes().contains(u))
+		{
+			cp.getUserCommentLikes().remove(u);
+			l.add(u);
+			cp.setUserCommentDislikes(l);
+			}
+		else
+		{	l.add(u);}
+		commentRepo.save(cp);
+		
+	}
+
+	@Override
+	public void CommentAComment(CommentPost response, Long commentid, Long idUser) {
+		
+				User u = userRepo.findById(idUser).orElseGet(null);
+				response.setUser(u);
+				CommentPost c = new CommentPost();
+				c.setCommId(commentid);
+				response.setResponse(c);
+				//comment.setPosts(c.getPosts());
+				
+				commentRepo.save(response);
+				
+		
+	}
+
+	
+	/*public int Like(Long id){
+	
+	CommentPost p= commentRepo.findById(id).orElse(null);
+	int likes=p.getLikeikes();
+	return likes+1;
+
+}
+
+public int dislike(Long id){
+	CommentPost p= commentRepo.findById(id).orElse(null);
+	int dislikes=p.getDislikes();
+	return dislikes+1;
+	
+}*/
 }
