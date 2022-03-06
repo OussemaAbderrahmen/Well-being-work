@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.extern.slf4j.Slf4j;
 import tn.esprit.spring.wecare.entities.Collaboration;
 import tn.esprit.spring.wecare.entities.Complaint;
+import tn.esprit.spring.wecare.entities.DuplicateComplainers;
 import tn.esprit.spring.wecare.entities.Entreprise;
 import tn.esprit.spring.wecare.entities.MostComplainer;
 import tn.esprit.spring.wecare.entities.statComplaint;
@@ -39,7 +40,7 @@ public class ComplaintController {
 	
 	//http://localhost:8089/wecare/complaint/create-complaint/1
 		@PostMapping("/create-complaint/{idUser}") 
-		public Complaint createComplaintAndAsseigntoUser(@RequestBody Complaint c ,@PathVariable Long idUser)
+		public String createComplaintAndAsseigntoUser(@RequestBody Complaint c ,@PathVariable Long idUser) throws IOException
 		 {
 			
 			return complaintService.createComplaintAndAsseigntoUser(c, idUser);
@@ -75,27 +76,13 @@ public class ComplaintController {
 			return c;
 		}
 		
-		@PostMapping("/emotions") 
-		public void emotionComplaint(@RequestBody String description) throws IOException
-		 {
-
-//			    HttpServletRequest request = HttpServletRequest.get("https://api.apilayer.com/text_to_emotion").addHeader("apikey", "W0osvTrqOhman1PEd4oBbWB1BATBNdek").connectTimeout(120000);
-//	            String res = request.body();
-//	            return new ResponseEntity<>(res, HttpStatus.OK);
-			OkHttpClient client = new OkHttpClient().newBuilder().build();
-
-		    MediaType mediaType = MediaType.parse("text/plain");
-
-		    Request request = new Request.Builder()
-		      .url("https://api.apilayer.com/text_to_emotion")
-		      .addHeader("apikey", "W0osvTrqOhman1PEd4oBbWB1BATBNdek")
-		      
-		      .build();
-		    Response response = client.newCall(request).execute();
-		    log.info("response:"+ response);
-	    
-			
-		}
+//		@GetMapping("/emotions") 
+//		public void emotionComplaint(@RequestBody String description) throws IOException
+//		 {
+//
+//	    
+//			
+//		}
 		
 		
 		//http://localhost:8089/wecare/complaint/mostcomplainer
@@ -110,4 +97,21 @@ public class ComplaintController {
 					
 					return complaintService.getstatComplains();
 				}
+				
+		//http://localhost:8089/wecare/complaint/create-complaint-ad/1
+				@PostMapping("/create-complaint-ad/{idAd}") 
+		public Complaint createComplaintAndAsseigntoAd(@RequestBody Complaint c ,@PathVariable Long idAd)
+			{
+					
+					return complaintService.createComplaintAndAsseigntoAd(c, idAd);
+			}	
+				
+				
+		//http://localhost:8089/wecare/complaint/duplicatecomplainers
+				@GetMapping("/duplicatecomplainers")
+				public List<DuplicateComplainers> duplicateComplainer(){
+					return complaintService.duplicateComplainers();
+				}
+				
+		
 }

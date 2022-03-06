@@ -1,8 +1,12 @@
+
+
 package tn.esprit.spring.wecare.entities;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -18,7 +23,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Entity
@@ -27,27 +31,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class Complaint {
-
+public class Ads {
+	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long ComplaintId;
-	private Date ComplaintDate;
-	private String ComplaintImage;
-	private String ComplaintDescription;
-	private boolean status;
+	private Long AdId;
+	private Date AdDate;
 	@Enumerated(EnumType.STRING)
-	private Type ComplaintType;
-	@ManyToMany
+	private TypeAd Type;
+	private String AdDescription;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="ad")
 	@JsonIgnore
-	 Set<User> usercomplaints;
-	
+	 List<Complaint> adcomplaints;
 	@ManyToOne
 	@JsonIgnore
 	public User user; 
-	@ManyToOne
-	@JsonIgnore
-	public Ads ad; 
-	
+
 }
