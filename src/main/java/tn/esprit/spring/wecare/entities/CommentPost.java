@@ -63,7 +63,6 @@ public class CommentPost {
 	
 	@ToString.Exclude
 	@OneToMany(mappedBy = "Response",cascade = CascadeType.ALL)
-
 	private Set<CommentPost> CommentResponses;
 	
 	@ManyToOne

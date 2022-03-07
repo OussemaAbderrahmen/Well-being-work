@@ -8,7 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,8 +31,9 @@ public class Questions {
     private Long QuestionId;
 	private String Questions;
 	
-	@ManyToMany
-	public List<Quizz> quizes; 
+	@ManyToOne
+	@JsonIgnore
+	Quizz quizz;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="questions")
 	public List<Answers> answers; 

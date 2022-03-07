@@ -1,6 +1,7 @@
 package tn.esprit.spring.wecare.entities;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -12,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -37,21 +40,8 @@ public class Posts {
 	private String TitlePost;
 	private String DescriptionPost;
 	private int NbComment;
-	private LocalDateTime DatePost;
+	private Date DatePost;
 	private String ImagePost;
-	
-	
-
-	
-	
-
-	public Posts(String titlePost, String descriptionPost, LocalDateTime datePost, String imagePost) {
-		super();
-		TitlePost = titlePost;
-		DescriptionPost = descriptionPost;
-		DatePost = datePost;
-		ImagePost = imagePost;
-	}
 
 	@ManyToOne(cascade=CascadeType.ALL)
     @JsonIgnore
@@ -62,6 +52,7 @@ public class Posts {
 	public List<CommentPost> commentposts ; 
 	
 	@ManyToMany(cascade=CascadeType.ALL)
+	@JsonIgnore
 	public List<Departement> Departements;
 	
 	@ManyToMany
@@ -71,6 +62,14 @@ public class Posts {
 	@ManyToMany
 	@JsonIgnore
 	Set<User> userDislikes;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JsonIgnore
+	private Dictionary dictionary;
+	
+	/*@ManyToOne(cascade=CascadeType.ALL)
+	@JsonIgnore
+	private CommentPost commentPost;*/
 
 	
 }

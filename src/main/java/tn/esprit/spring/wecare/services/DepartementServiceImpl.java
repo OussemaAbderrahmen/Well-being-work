@@ -23,9 +23,9 @@ public class DepartementServiceImpl implements IDepartmentService {
 	@Override
 	public Departement updateDepartement(Departement d, Long id) {
 		Departement dd =departementRepository.findById(id).get();
-		d.setDepartementName(dd.getDepartementName());
+		dd.setDepartementName(d.getDepartementName());
 		
-		return departementRepository.save(d);
+		return departementRepository.save(dd);
 	}
 
 	@Override

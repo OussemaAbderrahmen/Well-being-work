@@ -5,9 +5,11 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,26 +36,30 @@ import lombok.extern.slf4j.Slf4j;
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long UserId;
+private Long userId;
 	
 	private String email;
-	private String FirstName;
-	private String LastName;
-	private int NbPoints;
-	private String Password;
-	private Date BirthDate;
-	private boolean Locked;
-	private boolean Enabled;
-	private boolean Deleted;
-	private Timestamp CreatedAt;
-	private Timestamp ModifiedAt;
-	private Timestamp DeletedAt;
-	private String Image;
-
+	private String firstName;
+	private String lastName; 
+	private int nbPoints;
+	private String password;
+	private String userName;
+	private Date birthDate;
+	private boolean active;
+	private boolean locked;
+	private boolean enabled;
+	private boolean deleted;
+	//private Timestamp createdAt;
+	//private Timestamp modifiedAt;
+	//private Timestamp deletedAt;
+	private String image;
+	private int warningNum;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
-	@JsonIgnore
-	public List<Posts> posts; 
+	
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch= FetchType.EAGER)
+	private Set<Role> roles;
+	
+	
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	public List<Quizz> quizz; 
@@ -67,17 +73,16 @@ public class User {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	public List<Collaboration> collaborations ; 
 	
-	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	public List<Complaint> complaints ;
-	
+
+
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	public List<Offer> offers ;
 	
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy="users")
-	public List<Role> roles ;
 	
+	@JsonIgnore
 	@OneToMany (cascade = CascadeType.ALL, mappedBy="user")
 	public List<Donation> donations;
 	
@@ -87,22 +92,23 @@ public class User {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	public List<Invitation> invitations ;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
-	public List<Participationevent> participationevents ;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	public List<Dates> dates;
 	
-	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
-	@JsonIgnore
-	public List<CommentPost> userComments;
+	
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JsonIgnore
 	public Departement Departement;
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
+	@JsonIgnore
+	public List<Posts> posts; 
 	
-	
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
+	@JsonIgnore
+	public List<CommentPost> userComments;
 }
 
 

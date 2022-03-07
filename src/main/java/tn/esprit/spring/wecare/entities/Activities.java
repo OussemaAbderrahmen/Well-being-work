@@ -2,10 +2,14 @@ package tn.esprit.spring.wecare.entities;
 
 
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 
@@ -28,7 +32,14 @@ public class Activities {
  private String ActivitieName;
  private boolean Favorie;
  private String Image;
- 
-	@ManyToOne
-	Activityevent activityevent;
+
+ @ManyToMany(cascade = CascadeType.ALL, mappedBy="activities")
+ public List<Event> events; 
+  
+  @ManyToMany
+ public List<User> user; 
+  
+  @ManyToMany
+ public List<Favoris> favoris; 
+  
 }

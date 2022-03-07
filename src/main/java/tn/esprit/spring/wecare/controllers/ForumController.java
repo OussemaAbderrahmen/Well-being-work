@@ -14,17 +14,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
 import tn.esprit.spring.wecare.dto.UserPosts;
 import tn.esprit.spring.wecare.entities.BestAndWorstPost;
 import tn.esprit.spring.wecare.entities.CommentPost;
 import tn.esprit.spring.wecare.entities.Departement;
+import tn.esprit.spring.wecare.entities.Dictionary;
+import tn.esprit.spring.wecare.entities.MostDynamicUser;
 import tn.esprit.spring.wecare.entities.Posts;
 import tn.esprit.spring.wecare.services.CommentPostServiceImpl;
 import tn.esprit.spring.wecare.services.DepartementServiceImpl;
+import tn.esprit.spring.wecare.services.DictionnaryServiceImpl;
 import tn.esprit.spring.wecare.services.PostServiceImpl;
-
+import tn.esprit.spring.wecare.services.UserServiceImpl;
+@Slf4j
 @RestController
 @RequestMapping("/forum")
 public class ForumController {
@@ -34,14 +40,19 @@ public class ForumController {
 	CommentPostServiceImpl commentService;
 	@Autowired
 	DepartementServiceImpl departementService;
+	@Autowired
+	UserServiceImpl userService;
+	
+	@Autowired
+	DictionnaryServiceImpl dictionaryService;
 
 	//----------------------------------------------------------POST------------------------------------------------------------------------------------------------
 
 	// http://localhost:8089/wecare/forum/create-post
 	@PostMapping("/create-post")
-	public Posts createPost(@RequestBody Posts post) {
+	public void createPost(@RequestBody Posts post) {
 
-		return postService.createPost(post);
+		 postService.createPost(post);
 	}
 	
 	// http://localhost:8089/wecare/forum/create-full-post/1
@@ -56,9 +67,12 @@ public class ForumController {
 	// http://localhost:8089/wecare/forum/create-full-post/1/1
 	@PostMapping("/create-full-post/{user-id}/{dep-id}")
 	public Posts createPostAndAffectToDeparmentAndUser(@RequestBody Posts p,@PathVariable(name="user-id")Long userId,@PathVariable(name="dep-id")Long depId){
-		
-		
+		   //log.info("departement :"+userId.toString());
+
+		   //log.info("departement :"+userId.toString());
+
 		return postService.createPostAndAffectToUserAndDepartement(p, userId, depId);
+		
 	}
 
 	// http://localhost:8089/wecare/forum/update-post/2
@@ -74,12 +88,13 @@ public class ForumController {
 		List<Posts> listPosts = postService.getAllPosts();
 		return listPosts;
 	}
-	// 6
+	// http://localhost:8089/wecare/forum/get-all-postsSorted
 	@GetMapping("/get-all-postsSorted")
 	public List<Posts> getAllSorted() {
 		List<Posts> listPosts = postService.getAllPostSorted();
 		return listPosts;
 	}
+	
 	
 	// http://localhost:8089/wecare/forum/searchbyname/thisisatest
 	@GetMapping("/searchbyname/{name}")
@@ -87,6 +102,23 @@ public class ForumController {
 	{
 		return postService.searchbyname(name);
 	}
+	
+	//-------------------------------------Search By title and description Angular -----------------------------------------------
+	// http://localhost:8089/wecare/forum/searchByTitle/thisisatest
+		@GetMapping("/searchByTitle/{title}")
+		public List<UserPosts> searchByTitle ( @PathVariable("title") String title)
+		{
+			return postService.searchByTitle(title);
+		}
+		// http://localhost:8089/wecare/forum/searchbyDescription/thisisatest
+		@GetMapping("/searchbyDescription/{description}")
+		public List<UserPosts> searchByDescription ( @PathVariable("description") String description)
+		{
+			return postService.searchbyDescription(description);
+		}
+		
+	//-------------------------------------End By title and description Angular -----------------------------------------------
+
 
 	// http://localhost:8089/wecare/forum/get-post-by-id/2
 	@GetMapping("/get-post-by-id/{post-id}")
@@ -128,6 +160,15 @@ public class ForumController {
 		return postService.bestPost();
 	}
 	
+	//http://localhost:8089/wecare/forum/getbestpostbymonth
+
+		@GetMapping("/getbestpostbymonth")
+		public List<BestAndWorstPost> getBestPostByMonth(){
+			return postService.bestPostByMonth();
+		}
+	
+	
+	
 	
 	//http://localhost:8089/wecare/forum/getworstpost
 
@@ -138,9 +179,9 @@ public class ForumController {
 	
 	//---------------------------------------------------------COMMENT --------------------------------------------------------------
 
-	// http://localhost:8089/wecare/forum/add-comment/1
+	// http://localhost:8089/wecare/forum/add-comment/1/2
 	@PostMapping("/add-comment/{post-id}/{user-id}")
-	public CommentPost addComment(@RequestBody CommentPost cp, @PathVariable(name="post-id") Long userId,@PathVariable(name="user-id") Long idPost) {
+	public CommentPost addComment(@RequestBody CommentPost cp, @PathVariable(name="post-id") Long idPost,@PathVariable(name="user-id") Long userId) {
 
 		return commentService.createAndAffectCommentToPostAndUser(cp, userId, idPost);
 
@@ -150,6 +191,15 @@ public class ForumController {
 	public List<CommentPost> retrieveAllComments(){
 		return commentService.getAllComment();
 	}
+	
+	
+	//http://localhost:8089/wecare/forum/retrieve-comment-by-id/23
+	@GetMapping("/retrieve-comment-by-id/{id}")
+	public CommentPost retrieveCommentByIyd(@PathVariable("id") Long id){
+		return commentService.getCommentById(id);
+	}
+	
+	
 
 	// http://localhost:8089/wecare/forum/retrieve-comments-by-postid/2
 	@GetMapping("/retrieve-comments-by-postid/{post-id}")
@@ -223,4 +273,24 @@ public class ForumController {
 		public void deleteDepartement(@PathVariable("departement-id") Long departementId){
 			departementService.deleteDepartement(departementId);
 		}
+	
+	//http://localhost:8089/wecare/forum/addword
+		@PostMapping("/addword")
+		public Dictionary addword(@RequestBody Dictionary dd)
+		{
+			return dictionaryService.addWord(dd);
+		}
+		
+		//http://localhost:8089/wecare/forum/getAllWord
+				@GetMapping("/getAllWord")
+				public List<Dictionary> getAllWord()
+				{
+					 return dictionaryService.getBadWords();
+				}
+				
+	 //http://localhost:8089/wecare/forum/getMostActiveUser
+			@GetMapping("/getMostActiveUser")
+				public MostDynamicUser getMostActiveUser(){
+					return postService.getMostActiveUser();
+				}
 	}

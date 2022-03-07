@@ -9,7 +9,7 @@ import tn.esprit.spring.wecare.entities.Posts;
 
 public interface IPostservice {
 
-	public Posts createPost(Posts p);
+	public void createPost(Posts p);
 	public Posts createPostAndAffectToUser(Posts p,Long userId);
 	public Posts updatePost(Posts p,Long id);
 	public List<Posts> getAllPosts();
@@ -21,4 +21,6 @@ public interface IPostservice {
 	public BestAndWorstPost worstPost();
 	public Posts createPostAndAffectToUserAndDepartement(Posts p,Long userId,Long depId);
 	public List<UserPosts> searchbyname(String name);
+	public List<UserPosts> searchByTitle(String name);
+	public List<UserPosts> searchbyDescription(String name);
 }
