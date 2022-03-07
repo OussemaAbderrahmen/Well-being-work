@@ -95,6 +95,16 @@ public class ForumController {
 		return listPosts;
 	}
 	
+	// http://localhost:8089/wecare/forum/get-best-post-by-month
+		@GetMapping("/get-best-post-by-month")
+		public List<BestAndWorstPost> getbestPostByMonth() {
+			List<BestAndWorstPost> listPosts = postService.bestPostByMonth();
+			return listPosts;
+		}
+	
+	
+	
+	
 	
 	// http://localhost:8089/wecare/forum/searchbyname/thisisatest
 	@GetMapping("/searchbyname/{name}")
@@ -159,15 +169,6 @@ public class ForumController {
 	public BestAndWorstPost getBestPost(){
 		return postService.bestPost();
 	}
-	
-	//http://localhost:8089/wecare/forum/getbestpostbymonth
-
-		@GetMapping("/getbestpostbymonth")
-		public List<BestAndWorstPost> getBestPostByMonth(){
-			return postService.bestPostByMonth();
-		}
-	
-	
 	
 	
 	//http://localhost:8089/wecare/forum/getworstpost

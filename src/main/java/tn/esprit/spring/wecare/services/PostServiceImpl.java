@@ -264,10 +264,10 @@ public class PostServiceImpl implements IPostservice {
 		return postRepo.postByDescription(description);
 	}
 	
-
 	public List<BestAndWorstPost> bestPostByMonth(){
-		return postRepo.bestPostsByMonth();
+		return postRepo.bestpostbymonth();
 	}
+
 	
 
 	  /*public List<Posts> getAllPaginated(final Integer pageNumber) {

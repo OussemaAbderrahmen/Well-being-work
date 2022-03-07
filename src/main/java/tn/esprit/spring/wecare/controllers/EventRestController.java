@@ -2,6 +2,8 @@ package tn.esprit.spring.wecare.controllers;
 
 import java.util.List;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,14 +79,14 @@ public class EventRestController {
 		}
 	
 	// http://localhost:8089/wecare/event/events-same-interest
-	@GetMapping("/events-same-interest")
-	public List<Event> eventTypique(long id){
+	@GetMapping("/events-same-interest/{id-user}")
+	public List<Event> eventTypique(@PathVariable("id-user")long id){
 		return eventIservice.eventTypique(id);
 	}
 	
 	// http://localhost:8089/wecare/event/type-event-plusparticipe
-	@GetMapping("/type-event-plusparticipe")
-	public typef typeplusparticipe(long id) {
+	@GetMapping("/type-event-plusparticipe/{id-user}")
+	public typef typeplusparticipe(@PathVariable("id-user")long id) {
 		return eventIservice.typeplusparticipe(id);
 	}
 

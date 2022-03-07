@@ -69,15 +69,13 @@ public interface PostRepository extends JpaRepository<Posts, Long> {
 			+ "DESC LIMIT 1",nativeQuery=true)
 	public MostDynamicUser mostDynamicUser(); 
 	
+@Query(value="SELECT posts.title_post AS name ,COUNT( posts_user_likes.posts_post_id) occ"
+		+ " FROM posts_user_likes LEFT JOIN posts ON posts.post_id = posts_user_likes.posts_post_id "
+		+ "where Month(posts.date_post) = Month(CURRENT_DATE) "
+		+ "GROUP BY(post_id) ORDER BY  occ  "
+		+ "DESC LIMIT 3", nativeQuery=true )
+public List<BestAndWorstPost> bestpostbymonth();
 
-
-	@Query( value="SELECT posts.title_post AS name, COUNT( posts_user_likes.posts_post_id) occ"
-			+ " FROM posts_user_likes LEFT JOIN posts ON posts.post_id = posts_user_likes.posts_post_id "
-			+ "where Month(posts.date_post) = Month(CURRENT_DATE) "
-			+ "GROUP BY(post_id) "
-			+ "ORDER BY  occ "
-			+ "DESC LIMIT 3", nativeQuery=true)
-	public List<BestAndWorstPost> bestPostsByMonth();
 
    /* @Query("from Posts p order by p.DatePost desc")
     Page<Posts> findAll(final Pageable pageable);*/
