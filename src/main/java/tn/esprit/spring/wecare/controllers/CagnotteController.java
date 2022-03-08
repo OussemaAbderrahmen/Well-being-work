@@ -21,7 +21,7 @@ public class CagnotteController {
 @Autowired
 CagnotteServiceImpl cagServ;
 
-    //http://localhost:8089/wecare/cagnotte/add-cagnotte
+//http://localhost:8089/wecare/forum/add-cagnotte
 	@PostMapping("/add-cagnotte") 
 	public Cagnotte addCagnotte(@RequestBody Cagnotte cagnotte)
 	 {
@@ -30,25 +30,23 @@ CagnotteServiceImpl cagServ;
 	}
 	//http://localhost:8089/wecare/cagnotte/update-cagnotte
 	@PutMapping("/update-cagnotte")
-	public Cagnotte updateCagnotte(@RequestBody Cagnotte cagnotte){
-		
-		cagServ.updateCagnotte(cagnotte);
-		return cagnotte;
+	public Cagnotte updateCagnotte(@RequestBody Cagnotte c){
+		return cagServ.updateCagnotte(c);
 	}
-	//http://localhost:8089/wecare/cagnotte/get-all-cagnottes
+	//http://localhost:8089/wecare/forum/get-all-cagnottes
 	@GetMapping("/get-all-cagnottes")
 	public List<Cagnotte> getAll(){
 		List<Cagnotte> listCagnotte = cagServ.getAllCagnotte();
 		return listCagnotte;
 	}
 	
-	//http://localhost:8089/wecare/cagnotte/get-cagnotte-by-id/2
+	//http://localhost:8089/wecare/forum/get-cagnotte-by-id/2
 	@GetMapping("/get-cagnotte-by-id/{cagnotte-id}")
 	public Cagnotte getCagnotteById(@PathVariable("cagnotte-id") Long id){
 		Cagnotte c= cagServ.getCagnotteById(id);
 		return c;
 	}
-	//http://localhost:8089/wecare/cagnotte/delete-cagnotte/2
+	//http://localhost:8089/wecare/forum/delete-cagnotte/2
 	@DeleteMapping("/delete-cagnotte/{cagnotte-id}")
 	public void deleteCagnotte(@PathVariable("cagnotte-id")Long id) {
 		cagServ.deleteCagnotteById(id);

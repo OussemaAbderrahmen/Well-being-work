@@ -1,5 +1,7 @@
 package tn.esprit.spring.wecare.entities;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,9 +27,9 @@ public class Donation {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	
 	private Long DonationId;
 	private double Amount;
+	private Date dateDonation;
 	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.ALL)
 	User user;

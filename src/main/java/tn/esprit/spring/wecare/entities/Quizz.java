@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,9 +34,11 @@ public class Quizz {
 
 	
 	@ManyToOne
+	@JsonIgnore
 	User user;
 	
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy="quizes")
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy="quizz")
+	
 	public List<Questions> questions; 
 	
 }

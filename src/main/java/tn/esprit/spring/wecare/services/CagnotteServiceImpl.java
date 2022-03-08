@@ -8,12 +8,18 @@ import org.springframework.stereotype.Service;
 import tn.esprit.spring.wecare.entities.Cagnotte;
 import tn.esprit.spring.wecare.iservices.ICagnotteService;
 import tn.esprit.spring.wecare.repositories.CagnotteRepository;
+import tn.esprit.spring.wecare.repositories.DonationRepository;
+import tn.esprit.spring.wecare.repositories.DrawalRepository;
 
 @Service
 public class CagnotteServiceImpl implements ICagnotteService{
 	
 	@Autowired
 	CagnotteRepository cagnotteRepo;
+	@Autowired
+	DonationRepository donRepo;
+	@Autowired
+	DrawalRepository drawalRepo;
 
 	@Override
 	public Cagnotte addCagnotte(Cagnotte c) {

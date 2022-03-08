@@ -1,4 +1,4 @@
-package tn.esprit.spring.wecare;
+package tn.esprit.spring.WeCare;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

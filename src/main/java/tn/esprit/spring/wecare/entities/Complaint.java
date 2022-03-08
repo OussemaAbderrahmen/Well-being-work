@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +34,6 @@ public class Complaint {
 	private String ComplaintDescription;
 	@Enumerated(EnumType.STRING)
 	private Type ComplaintType;
-	private boolean Status;
 	
 	@ManyToOne
 	User user; 
