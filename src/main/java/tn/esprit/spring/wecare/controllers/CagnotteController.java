@@ -28,12 +28,10 @@ CagnotteServiceImpl cagServ;
 		
 		return cagServ.addCagnotte(cagnotte);
 	}
-	//http://localhost:8089/wecare/forum/update-cagnotte/2
-	@PutMapping("/update-cagnotte/{cagnotteId}")
-	public Cagnotte updateCagnotte(@PathVariable("cagnotteId") Long cagnotteId){
-		Cagnotte c = this.cagServ.getCagnotteById(cagnotteId);
-		cagServ.updateCagnotte(c);
-		return c;
+	//http://localhost:8089/wecare/cagnotte/update-cagnotte
+	@PutMapping("/update-cagnotte")
+	public Cagnotte updateCagnotte(@RequestBody Cagnotte c){
+		return cagServ.updateCagnotte(c);
 	}
 	//http://localhost:8089/wecare/forum/get-all-cagnottes
 	@GetMapping("/get-all-cagnottes")

@@ -1,24 +1,28 @@
 package tn.esprit.spring.wecare.entities;
 
-import java.util.Date;
 
+
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+
 
 @Entity
 @Getter
 @Setter
-@Slf4j
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class Activities {
@@ -28,7 +32,14 @@ public class Activities {
  private String ActivitieName;
  private boolean Favorie;
  private String Image;
- 
-	@ManyToOne
-	Activityevent activityevent;
+
+ @ManyToMany(cascade = CascadeType.ALL, mappedBy="activities")
+ public List<Event> events; 
+  
+  @ManyToMany
+ public List<User> user; 
+  
+  @ManyToMany
+ public List<Favoris> favoris; 
+  
 }

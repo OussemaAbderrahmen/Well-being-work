@@ -31,6 +31,8 @@ import tn.esprit.spring.wecare.entities.statComplaint;
 import tn.esprit.spring.wecare.services.AdsServiceImpl;
 import tn.esprit.spring.wecare.services.ComplaintServiceImpl;
 import java.io.*;
+import java.sql.SQLException;
+
 import okhttp3.*;
 
 @RestController
@@ -61,10 +63,18 @@ public class AdsController {
 		
 		//http://localhost:8089/wecare/ads/get-ad-by-id/{ad-id}
 		@GetMapping("/get-ad-by-id/{ad-id}")
-		public Ads getAdById(@PathVariable("complaint-id") Long id){
+		public Ads getAdById(@PathVariable("ad-id") Long id){
 			Ads c= adService.getAdById(id);
 			return c;
 		}
+		
+	//http://localhost:8089/wecare/ads/get-scheduled-ad-by-id/
+				@GetMapping("/get-scheduled-ad-by-id/")
+				public Ads getAdById( ) throws SQLException{
+					Ads c= adService.getAdByIdScheduled();
+					return c;
+				}
+
 		//http://localhost:8089/wecare/complaint/delete-ad/{ad-id}
 		@DeleteMapping("/delete-ad/{ad-id}")
 		public void deleteAd(@PathVariable("ad-id")Long id) {

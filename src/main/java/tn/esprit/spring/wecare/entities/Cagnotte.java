@@ -12,16 +12,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-
 @Entity
 @Getter
 @Setter
-@Slf4j
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cagnotte {
@@ -29,16 +28,20 @@ public class Cagnotte {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long CagnotteId;
-	
 	private String CagnotteTitle;
 	private String CagnotteDescription;
 	private boolean IsActive;
 	private Double MoneyCollected;
+	
 	@Enumerated(EnumType.STRING)
 	private TypeCagnotte typeCagnotte;
 	private String Image;
-	
-	
+
+	@JsonIgnore
 	@OneToMany(mappedBy ="cagnotte", cascade = CascadeType.ALL)
 	public Set<Donation> donations;
+	
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="cagnotte")
+	public List<WithDrawal> drawals;
 }

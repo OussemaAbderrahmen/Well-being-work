@@ -39,4 +39,4 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
 	@Query(value="select distinct users.email , count(cmp.complaint_id) as doublon from user users left join complaint cmp on users.user_id=cmp.user_user_id group by (cmp.complaint_id) ",nativeQuery=true)
 	public List<DuplicateComplainers> getDuplicateComplainers();
-}
+} 	 	

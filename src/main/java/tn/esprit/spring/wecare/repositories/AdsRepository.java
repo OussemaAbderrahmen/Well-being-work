@@ -28,5 +28,7 @@ public interface AdsRepository extends JpaRepository<Ads, Long> {
 	@Query(value ="select users.email as user, ads.ad_description, count(ad_id) as nbr_ads from ads ads left join user users on users.user_id=ads.user_user_id", nativeQuery=true)
 	public List <statAdCompl> getMostAdComplainer();
 	
+	
+	
 
 }

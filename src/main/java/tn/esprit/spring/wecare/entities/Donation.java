@@ -1,10 +1,15 @@
 package tn.esprit.spring.wecare.entities;
 
+import java.util.Date;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,12 +28,12 @@ public class Donation {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long DonationId;
-	private Long CagnotteId;
-	private Long UserId;
-	
-	@ManyToOne
+	private double Amount;
+	private Date dateDonation;
+	@JsonIgnore
+	@ManyToOne(cascade=CascadeType.ALL)
 	User user;
-	
-	@ManyToOne
+	@JsonIgnore
+	@ManyToOne(cascade=CascadeType.ALL)
 	Cagnotte cagnotte;
 }

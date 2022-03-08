@@ -8,8 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,11 +37,21 @@ public class Event {
 	private boolean Full;
 	private int NbPlaceDisponible;
 	private String Images;
+	private String type;
+	private int note;
+	private Boolean isAccepted;
+	private float price;
+	private float depenses;
+	private float profit;
 	
-	@ManyToOne
-	Participationevent participationevent;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="event")
-	public List<Activityevent> activityevents; 
 
+	@JsonIgnore
+	@ManyToMany
+	public List<User> user;
+	
+	@JsonIgnore
+	@ManyToMany
+	
+	public List<Activities> activities; 
+	
 }
