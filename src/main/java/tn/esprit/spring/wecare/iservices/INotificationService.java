@@ -17,4 +17,9 @@ public Notification updateNotification(Notification n );
 public List<Notification> getAllNotification();
 public Notification getNotificationById(Long id);
 public void deleteNotificationById(Long id);
+public String  verifnotification ( Long id);
+//public String readNotification (Long id);
+public String statisticsNotification ();
+
+
 }

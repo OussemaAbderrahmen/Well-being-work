@@ -15,13 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.spring.wecare.entities.Notification;
+import tn.esprit.spring.wecare.repositories.UserRepository;
 import tn.esprit.spring.wecare.services.NotificationServiceImpl;
+import tn.esprit.spring.wecare.services.UserServiceImpl;
 
 @RestController
 @RequestMapping("/notification")
 public class NotificationController {
 	@Autowired
 	NotificationServiceImpl notserv;
+	UserServiceImpl userserv;
 	
 	//http://localhost:8089/wecare/notificationr/add-notification
 			@PostMapping("/add-notification") 
@@ -41,6 +44,7 @@ public class NotificationController {
 			@GetMapping("/get-all-notification")
 			public List<Notification> getAll(){
 				List<Notification> listNotification = notserv.getAllNotification();
+				
 				return listNotification;
 			}
 			
@@ -55,6 +59,28 @@ public class NotificationController {
 			public void deleteNotification(@PathVariable("notification-id")Long id) {
 				notserv.deleteNotificationById(id);
 			}
+			//http://localhost:8089/wecare/notification/Verify-notification/{notificationid}
+			@GetMapping("/Verify-notification/{notificationid}")
+			public String verifnotification ( @PathVariable("notificationid") Long notificationid ){
+				 
+				return notserv.verifnotification(notificationid)	;		
+						}
+			//http://localhost:8089/wecare/notification/Statistics
+				@GetMapping("/Statistics")
+				public String statisticsNotification (){
+					 
+					return notserv.statisticsNotification()	;		
+							}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 
 }

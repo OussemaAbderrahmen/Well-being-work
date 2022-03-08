@@ -47,6 +47,7 @@ public class User {
 	private Timestamp ModifiedAt;
 	private Timestamp DeletedAt;
 	private String Image;
+	
 	@Enumerated(EnumType.STRING)
 	private Role Role;
 	

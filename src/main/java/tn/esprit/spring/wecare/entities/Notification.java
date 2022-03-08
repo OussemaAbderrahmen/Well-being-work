@@ -1,6 +1,10 @@
 package tn.esprit.spring.wecare.entities;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,11 +14,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+
 @Entity
 @Getter
 @Setter
-@Slf4j
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class Notification {
@@ -22,8 +26,20 @@ public class Notification {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long NotificationId;
 	private String TitleNotification;
+	private Date DateDeNotification;
+	private String Description;
+	private String UserNotif;
+	private Boolean Etat;
+	
+	
+	
+	
+	
+	
+	
 	
 	@ManyToOne
 	User user;
+	
 
 }

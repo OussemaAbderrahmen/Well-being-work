@@ -3,6 +3,7 @@ package tn.esprit.spring.wecare.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,10 @@ public class PromotionController {
 			return listPromo;
 		}
 		
+		
+		
+		
+		
 		//http://localhost:8089/wecare/promotion/get-promotion-by-id/2
 		@GetMapping("/get-promotion-by-id/{promotion-id}")
 		public Promotions getPromotionById(@PathVariable("promotion-id") Long id){
@@ -55,4 +60,24 @@ public class PromotionController {
 		public void deletePromotion(@PathVariable("promotion-id")Long id) {
 			promotionServ.deletePromotionsById(id);
 		}
+		//http://localhost:8089/wecare/promotion/evaluate/{promotionid}
+		//	@GetMapping("/evaluate/{promotionid}")
+			//public String verifnotification ( @PathVariable("promotionid") Long promotionid ){
+				 
+				//return promotionServ.Evaluation(promotionid)	;		
+						//}
+		//http://localhost:8089/wecare/promotion/evaluate/{promotion-id}
+				@GetMapping("/evaluate/{promotion-id}")
+				public String Evaluation(@PathVariable("promotion-id")  Long id){
+				 
+					return promotionServ.Evaluation(id);
+				}
+		//http://localhost:8089/wecare/promotion/sending
+				@PostMapping("/sending")
+				public void mailAvis (){
+				 
+					 promotionServ.mailAvis();
+				}
+				
+		
 }
